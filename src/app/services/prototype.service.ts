@@ -47,18 +47,18 @@ export class PrototypeService {
   }
 
 
-  // readUserDetails(){
-  //   if(this.auth.isSignedIn){
-  //     var user = this.firestore.collection("accounts", ref=>ref.where('email', '==', this.auth.getUserEmail()))
-  //     user.snapshotChanges().pipe(
-  //                                 map(actions => actions.map(a => {
-  //                                   const data = a.payload.doc.data() as any  
-
-  //                                   }))
-  //                               )
+  readUserDetails(){
+    if(this.auth.isSignedIn){
+      var user = this.firestore.collection("User", ref=>ref.where('email', '==', this.auth.getUserEmail()))
+      user.snapshotChanges().pipe(
+                                  map(actions => actions.map(a => {
+                                    const data = a.payload.doc.data() as any  
+                                    return data
+                                    }))
+                                )
       
-  //   }
-  // }
+    }
+  }
 
   writeAccounts(){
     var ref = this.firestore.collection('accounts')
@@ -106,8 +106,8 @@ export class PrototypeService {
 
   readChildProfiles(){  
     if(this.auth.isSignedIn){
-      var ref = this.firestore.collection("accounts")
-      return ref.snapshotChanges().pipe(
+      var child = this.firestore.collection("accounts", ref=>ref.where('email','==',this.auth.getUserEmail()))
+      return child.snapshotChanges().pipe(
                                         map(actions => actions.map(a => {
                                             const data = a.payload.doc.data() as any
                                             return data                                            
