@@ -16,15 +16,14 @@ export class PrototypeService {
   ctype = ['abc','xyz','pqr']
   vlink = "yt.com"
   name="Random guy"
-  dob="1/01/2001"
 
   constructor(private firestore: AngularFirestore, public auth : AuthserviceService) { }
   
-  subjectDetails(){
+  writeSubjectDetails(){
     var ref = this.firestore.collection('subjects')
     for(var i=0;i<this.initialSubs.length;i++){
       ref.add({
-                name : this.initialSubs[i],
+                name    : this.initialSubs[i],
                 content : this.contentVal.push({
                                                 name : this.cname[i],
                                                 type : this.ctype[i],
@@ -34,23 +33,39 @@ export class PrototypeService {
     }
   }
 
-  readUserDetails(){
-    if(this.auth.isSignedIn){
-      this.firestore.collection("accounts", ref=>ref.where('email', '==', this.auth.getUserEmail())).snapshotChanges().pipe(
-
-      )
+  readSubjects(){
+    for(var i=0;i<this.initialSubs.length;i++){
+      var sub = this.firestore.collection("subjects", ref=>ref.where('name','==',this.initialSubs[i]))
+      sub.snapshotChanges().pipe(
+                                  map(actions => actions.map(a => {
+                                      const id = a.payload.doc.id
+                                      this.subjectIDs.push([id, this.initialSubs[i]])
+                                    }))
+                                )
     }
+    return this.subjectIDs
   }
+
+
+  // readUserDetails(){
+  //   if(this.auth.isSignedIn){
+  //     var user = this.firestore.collection("accounts", ref=>ref.where('email', '==', this.auth.getUserEmail()))
+  //     user.snapshotChanges().pipe(
+  //                                 map(actions => actions.map(a => {
+  //                                   const data = a.payload.doc.data() as any  
+
+  //                                   }))
+  //                               )
+      
+  //   }
+  // }
 
   writeAccounts(){
     var ref = this.firestore.collection('accounts')
-    
     ref.add({
-              name : this.name,
-              dob  : this.dob,
-              uid  : this.getUserDocId(),
-              email: this.auth.getUserEmail()
-              
+              name  : this.name,
+              uid   : this.getUserDocId(),
+              email : this.auth.getUserEmail()             
     })
 
   }
@@ -69,6 +84,26 @@ export class PrototypeService {
     }
   }
 
+
+
+  writeChildProfiles(){
+    if(this.auth.isSignedIn){
+      var child = this.firestore.collection('accounts', ref=>ref.where('email','==',this.auth.getUserEmail()))
+
+      var sub = this.firestore.collection("subjects", ref=>ref.where('name','==','math'))
+      sub.snapshotChanges().pipe(
+                                  map(actions => actions.map(a => {
+                                      const id = a.payload.doc.id
+                                      child.add({
+                                                  child_profiles : [{name : 'child1', dob: '1/01/2001', subjects : id}]
+                                                })
+                                    }))
+                                )
+    }
+  }
+
+
+
   readChildProfiles(){  
     if(this.auth.isSignedIn){
       var ref = this.firestore.collection("accounts")
@@ -82,17 +117,5 @@ export class PrototypeService {
     }
   }
 
-  readSubjects(){
-    for(var i=0;i<this.initialSubs.length;i++){
-      var sub = this.firestore.collection("subjects", ref=>ref.where('name','==',this.initialSubs[i]))
-      sub.snapshotChanges().pipe(
-                                  map(actions => actions.map(a => {
-                                      const id = a.payload.doc.id
-                                      this.subjectIDs.push([id, this.initialSubs[i]])
-                                    }))
-                                )
-    }
-    return this.subjectIDs
-  }
 
 }
