@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,8 @@ import {
 import { environment } from '../environments/environment';
 import 'firebase/firestore';
 import { HomeComponent } from './home/home.component';
+import { CreateProfileComponent } from './create-profile/create-profile.component';
+import { ShowProfileComponent } from './show-profile/show-profile.component';
 
 
 @NgModule({
@@ -29,12 +31,15 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     SigninComponent,
     SignupComponent,
-    HomeComponent
+    HomeComponent,
+    CreateProfileComponent,
+    ShowProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
