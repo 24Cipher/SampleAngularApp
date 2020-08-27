@@ -1,0 +1,28 @@
+<div *ngIf="childProfileForm">
+    <div [formGroup]="childProfileForm">
+        <div>
+            <label>Name:</label>
+            <input fromControlName="name" type="text">
+        </div>
+        <div>
+            <label>Date of Birth:</label>
+            <input formControlName="dob" type="text">
+        </div>
+        <div class="form-group">
+            <label>Select subjects</label><br>
+            <div *ngFor = 'let sub of subjects; let i=index' >
+                <div class="form-check form-check-inline">
+                <input (change)=checkboxValueChange(i) ng-model="user.check.val1" name="check" class="form-check-input" type="checkbox" value="sub.key">
+                <label class="form-check-label" for="inlineCheckbox">{{sub.name}}</label>
+                </div>
+            </div>
+        </div>
+        <div>
+            <label>Grade:</label>
+            <input formControlName="grade" type="text">
+        </div>
+        <div class="form-group">
+            <button (click)="addChild()" class="btn float-right btn-success">Add Child</button>
+        </div>
+    </div>
+</div>
