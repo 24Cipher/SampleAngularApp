@@ -45,7 +45,6 @@ export class PrototypeService {
                                     // this.subjectIDs.push([id, this.initialSubs[i]])
                                   }))
                               )
-  
     // return this.subjectIDs
   }
 
@@ -58,23 +57,20 @@ export class PrototypeService {
                                     const data = a.payload.doc.data() as any  
                                     return data
                                     }))
-                                  ).subscribe(res=>{
-                                    const userData = res
-                                    this.writeAccounts(userData[0].name)
-                                  })
-      
+                                ).subscribe(res=>{
+                                  const userData = res;
+                                  this.writeAccounts(userData[0].name, userData[0].phone);
+                                })
     }
   }
-
-  writeAccounts(username){
-    var ref = this.firestore.collection('accounts')
+  writeAccounts(username, phone){
+    const ref = this.firestore.collection('accounts');
     ref.add({
               name  : username,
               uid   : this.auth.getUserId(),
               email : this.auth.getUserEmail(),
-              // phn   : phone
-    })
-
+              phn   : phone
+    });
   }
 
   // getUserDocId(){
