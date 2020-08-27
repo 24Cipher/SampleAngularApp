@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
   file;
   downloadURL: Observable<string>;
   isSaved = true;
-  constructor(public route: Router, public auth: AuthserviceService, private storage: AngularFireStorage, public db: AngularFirestore) { }
+  constructor(public route: Router, public auth: AuthserviceService, private storage: AngularFireStorage, public db: AngularFirestore, private service : Proto) { }
 
   ngOnInit(): void {
   }
