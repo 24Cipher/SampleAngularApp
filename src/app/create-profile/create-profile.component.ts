@@ -25,7 +25,7 @@ export class CreateProfileComponent implements OnInit {
       {
         name: [''],
         dob: [''],
-        subjects: this.fb.array([]),
+        subjects: [this.selectedSubjects],
         grade: ['']
       }
     );
@@ -35,10 +35,10 @@ export class CreateProfileComponent implements OnInit {
     this.service.readSubjects().subscribe((resp) => {
       this.subjects = resp;
       console.log(this.subjects);
+      for (const subj of this.subjects) {
+          subj.isChecked = false;
+        }
     });
-    for (const subj of this.subjects) {
-      subj.isChecked = false;
-    }
   }
   checkboxValueChange(i: number): void{
     const obj = this.subjects[i];
@@ -53,7 +53,7 @@ export class CreateProfileComponent implements OnInit {
   filterSelectedSubjects(): void {
     this.selectedSubjects =  this.subjects.filter((sub) => {
       if (sub.isChecked){
-        return sub;
+        return sub.id;
       }
     });
   }
