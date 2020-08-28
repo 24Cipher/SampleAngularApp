@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthserviceService } from '../authservice.service';
-import { map } from "rxjs/operators";
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrototypeService {
 
-  userEmail = ""
+  userEmail = ''
   initialSubs = ['math','science','cs']
   subjectIDs = []
   // contentVal = []
@@ -73,19 +73,19 @@ export class PrototypeService {
     });
   }
 
-  getUserDocId(){
-    if(this.auth.isSignedIn){
-      var user  = this.firestore.collection("User", ref=>ref.where('email', '==', this.auth.getUserEmail()))
-      // return user.docs[0].id; 
-      user.snapshotChanges().pipe(
-                                    map(actions => actions.map(a => {
-                                      const id = a.payload.doc.id
-                                      return id
-                                    }))
-                                  )
+  // getUserDocId(){
+  //   if(this.auth.isSignedIn){
+  //     var user  = this.firestore.collection("User", ref=>ref.where('email', '==', this.auth.getUserEmail()))
+  //     // return user.docs[0].id; 
+  //     user.snapshotChanges().pipe(
+  //                                   map(actions => actions.map(a => {
+  //                                     const id = a.payload.doc.id
+  //                                     return id
+  //                                   }))
+  //                                 )
 
-    }
-  }
+  //   }
+  // }
 
 
 
@@ -113,10 +113,9 @@ export class PrototypeService {
       return child.snapshotChanges().pipe(
                                         map(actions => actions.map(a => {
                                             const data = a.payload.doc.data() as any
-                                            return data                                            
+                                            return data
                                           }))
                                       )
-      
     }
   }
 
