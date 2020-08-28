@@ -43,17 +43,18 @@ export class SignupComponent implements OnInit {
         .pipe(
           finalize(() => {
             this.downloadURL = fileRef.getDownloadURL();
-            this.downloadURL.subscribe(url => {
+            this.downloadURL.subscribe( url => {
               if (url) {
                 this.fb = url;
               }
               this.user.imageurl = this.fb
-              this.db.collection("User").add(this.user);
-              this.service.readUserDetails();
+              // this.db.collection("User").add(this.user);
               let status = false
-              this.auth.signUpAuth(this.user.email, this.password)
+              this.auth.signUpAuth(this.user.email, this.password, this.user)
+              // this.service.readUserDetails();
               this.user = {name:"", phone:"", email:"",  gender:"", role:"", check:[], imageurl:""}
               this.arr = [{value: "Social Media", isChecked: false}, {value: "Company Website", isChecked: false}, {value: "Newsletter", isChecked: false}, {value: "Employee", isChecked: false}]
+              
               this.isSaved = true;
             });
           })
@@ -64,9 +65,9 @@ export class SignupComponent implements OnInit {
           }
         });
     } else {
-      this.db.collection("User").add(this.user)
+      // this.db.collection("User").add(this.user)
       let status = false
-      this.auth.signUpAuth(this.user.email, this.password)
+      this.auth.signUpAuth(this.user.email, this.password, this.user)
       this.user = {name:"", phone:"", email:"",  gender:"", role:"", check:[], imageurl:""}
       this.arr = [{value: "Social Media", isChecked: false}, {value: "Company Website", isChecked: false}, {value: "Newsletter", isChecked: false}, {value: "Employee", isChecked: false}]
       this.isSaved = true;

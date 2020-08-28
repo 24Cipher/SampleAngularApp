@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { PrototypeService } from './services/prototype.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +13,7 @@ export class AuthserviceService {
   loggedInUserId
   loggedInEmail
 
-  constructor(public router:Router, public afAuth: AngularFireAuth) {
+  constructor(public router: Router, public afAuth: AngularFireAuth, public firestore: AngularFirestore) {
     this.afAuth.user.subscribe(res=>{
       if(res.uid){
         this.loggedInUserId = res.uid
@@ -57,11 +60,38 @@ export class AuthserviceService {
     return this.isSignedIn
   }
 
-  signUpAuth(email, password){
+  readUserDetails(){
+    debugger;
+    if(this.isSignedIn){
+      var user = this.firestore.collection("User", ref=>ref.where('email', '==', this.getUserEmail()))
+      user.snapshotChanges().pipe(
+                                  map(actions => actions.map(a => {
+                                    const data = a.payload.doc.data() as any  
+                                    return data
+                                    }))
+                                ).subscribe(res=>{
+                                  const userData = res;
+                                  this.writeAccounts(userData[0].name, userData[0].phone);
+                                })
+    }
+  }
+  writeAccounts(username, phone){
+    const ref = this.firestore.collection('accounts');
+    ref.add({
+              name  : username,
+              uid   : this.getUserId(),
+              email : this.getUserEmail(),
+              phn   : phone
+    });
+  }
+
+  signUpAuth(email, password, user){
     this.afAuth.createUserWithEmailAndPassword(email, password).then(res=>{
+      this.firestore.collection('User').add(user);
       this.isSignedIn = true
       this.loggedInUserId  = res.user.uid
       this.loggedInEmail = email
+      this.readUserDetails();
       this.router.navigateByUrl("/home")
     }).catch(err=>{
       alert(err)
