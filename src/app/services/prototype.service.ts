@@ -39,9 +39,9 @@ export class PrototypeService {
     var sub = this.firestore.collection("subjects")
     return sub.snapshotChanges().pipe(
                                 map(actions => actions.map(a => {
-                                    const id = a.payload.doc.id
-                                    const data = a.payload.doc.data()
-                                    return {id, data}
+                                    const id = a.payload.doc.id;
+                                    const data = a.payload.doc.data() as object;
+                                    return {id, ...data};
                                     // this.subjectIDs.push([id, this.initialSubs[i]])
                                   }))
                               )
