@@ -34,24 +34,16 @@
   </div>
   </div>
   <div class="col-lg-4">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Age</th>
-          <th scope="col">Email Id</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stu of student; let i=index">
-          <td>{{stu.name}}</td>
-          <td>{{stu.age}}</td>
-          <td>{{stu.email}}</td>
-          <td><button class="btn btn-danger mx-3"><i class="fa fa-trash" style="color:#000000" (click)="delStudent(stu)"></i></button></td>
-        </tr>
-      </tbody>
-    </table></div>
+    <div class="container">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card">
+          <div class="card-body" style="width: min-content;">
+            <app-create-profile></app-create-profile>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <div *ngIf=isFormVisible class="col-lg-4">
     <div class="container">
@@ -90,5 +82,5 @@
 
 <div class="row">
 
-
+<app-show-profile></app-show-profile>
 </div>
