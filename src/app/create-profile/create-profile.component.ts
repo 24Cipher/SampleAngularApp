@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PrototypeService } from '../services/prototype.service';
+import { AuthserviceService } from '../authservice.service';
 
 @Component({
   selector: 'app-create-profile',
@@ -12,7 +13,8 @@ export class CreateProfileComponent implements OnInit {
   subjects: any [];
   selectedSubjects: any [];
   constructor(private fb: FormBuilder,
-              private service: PrototypeService) { }
+              private service: PrototypeService,
+              private auth: AuthserviceService) { }
 
   ngOnInit(): void {
     // this.service.writeSubjectDetails();
@@ -32,6 +34,7 @@ export class CreateProfileComponent implements OnInit {
   }
 
   fetchSubjects(): void {
+
     this.service.readSubjects().subscribe((resp) => {
       this.subjects = resp;
       console.log(this.subjects);
@@ -41,6 +44,7 @@ export class CreateProfileComponent implements OnInit {
     });
   }
   checkboxValueChange(i: number): void{
+    // debugger;
     const obj = this.subjects[i];
     obj.isChecked = !obj.isChecked;
     this.filterSelectedSubjects();
@@ -51,10 +55,11 @@ export class CreateProfileComponent implements OnInit {
   }
 
   filterSelectedSubjects(): void {
-    this.selectedSubjects =  this.subjects.filter((sub) => {
-      if (sub.isChecked){
-        return sub.id;
-      }
-    });
+    const filteredSubjs =  this.subjects.filter(sub => sub.isChecked);
+    this.selectedSubjects = filteredSubjs.map(sub => sub.id);
+    console.log(this.selectedSubjects)
+    this.childProfileForm.patchValue({
+      subjects: this.selectedSubjects
+    })
   }
 }

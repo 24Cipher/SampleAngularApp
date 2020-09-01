@@ -9,13 +9,13 @@ export class AuthGuardService {
 
   constructor(public router: Router, public auth: AuthserviceService) { }
 
-  canActivate() : boolean{
-    if(this.auth.isUserSignedIn()){
-      return true
+  canActivate(): boolean{
+    if (this.auth.isUserSignedIn()) {
+      return true;
     }
     else{
       this.router.navigateByUrl("\signin")
-      return false
+      return false;
     }
   }
 

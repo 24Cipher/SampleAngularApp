@@ -24,6 +24,7 @@ import 'firebase/firestore';
 import { HomeComponent } from './home/home.component';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { ShowProfileComponent } from './show-profile/show-profile.component';
+import { AuthserviceService } from './authservice.service';
 
 
 @NgModule({
@@ -45,7 +46,7 @@ import { ShowProfileComponent } from './show-profile/show-profile.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
   ],
-  providers: [],
+  providers: [AuthserviceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

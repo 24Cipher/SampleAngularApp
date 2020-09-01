@@ -5,6 +5,7 @@ import { AngularFireStorage } from "@angular/fire/storage";
 import { map, finalize } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { AngularFirestore } from '@angular/fire/firestore';
+import { PrototypeService } from '../services/prototype.service';
 
 @Component({
   selector: 'app-home',
@@ -14,27 +15,29 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class HomeComponent implements OnInit {
   userEmail = '';
   student: any;
+
   isFormVisible = false
   user:any = {name:"", email:"", gender:"", role:"", imageurl:""}
   subscribed = false
   newStudent = {name:"", age:0, email:""}
-  constructor(public route: Router, public auth: AuthserviceService, private storage: AngularFireStorage, public db: AngularFirestore) { }
+  constructor(public route: Router, public auth: AuthserviceService, private storage: AngularFireStorage, public db: AngularFirestore,
+              ) { }
 
   ngOnInit(): void {
     this.user = {name:"", email:"", gender:"", role:"", imageurl:""}
 
-    this.db.collection("Student")
-    .snapshotChanges()
-    .pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as any;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
-    )
-    .subscribe(res=>{
-      this.student = res
-    })
+    // this.db.collection("Student")
+    // .snapshotChanges()
+    // .pipe(
+    //   map(actions => actions.map(a => {
+    //     const data = a.payload.doc.data() as any;
+    //     const id = a.payload.doc.id;
+    //     return { id, ...data };
+    //   }))
+    // )
+    // .subscribe(res=>{
+    //   this.student = res
+    // })
 
     console.log(this.auth.getUserEmail())
 
@@ -52,6 +55,8 @@ export class HomeComponent implements OnInit {
       this.subscribed = !this.subscribed
 
     })
+
+ 
   }
 
   LogOut(){
