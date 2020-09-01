@@ -89,22 +89,24 @@ export class PrototypeService {
 
 
 
-  writeChildProfiles(){
+  writeChildProfiles(profile){
     if(this.auth.isSignedIn){
-      var child = this.firestore.collection('accounts', ref=>ref.where('email','==',this.auth.getUserEmail()))
-
-      var sub = this.firestore.collection("subjects", ref=>ref.where('name','==','math'))
-      sub.snapshotChanges().pipe(
-                                  map(actions => actions.map(a => {
-                                      const id = a.payload.doc.id
-                                      child.add({
-                                                  child_profiles : [{name : 'child1', dob: '1/01/2001', subjects : id}]
-                                                })
-                                    }))
-                                )
+      var child = this.firestore.collection('accounts', ref=>ref.where('uid','==',this.auth.getUserId()))
+      child.snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as any  
+          return data
+          }))
+      ).subscribe(res=>{
+        const userData = res
+        const child_arr = userData[0].child_profile
+        child_arr.push(profile)
+        child.add({
+          child_profile : child_arr
+        })
+      })
     }
   }
-
 
 
   readChildProfiles(){  
