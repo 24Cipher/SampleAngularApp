@@ -63,50 +63,40 @@ export class PrototypeService {
                                 })
     }
   }
+
   writeAccounts(username, phone){
-    const ref = this.firestore.collection('accounts');
-    ref.add({
+    const userid = this.auth.getUserId();
+    const ref = this.firestore.collection('accounts').doc(userid)
+    ref.set({
               name  : username,
-              uid   : this.auth.getUserId(),
               email : this.auth.getUserEmail(),
               phn   : phone
+              // child_profile : [{}]
     });
   }
-
-  // getUserDocId(){
-  //   if(this.auth.isSignedIn){
-  //     var user  = this.firestore.collection("User", ref=>ref.where('email', '==', this.auth.getUserEmail()))
-  //     // return user.docs[0].id; 
-  //     user.snapshotChanges().pipe(
-  //                                   map(actions => actions.map(a => {
-  //                                     const id = a.payload.doc.id
-  //                                     return id
-  //                                   }))
-  //                                 )
-
-  //   }
-  // }
-
 
 
   writeChildProfiles(profile){
     if(this.auth.isSignedIn){
-      var child = this.firestore.collection('accounts', ref=>ref.where('uid','==',this.auth.getUserId()))
+      const userid = this.auth.getUserId();
+      console.log("my user id : ",userid);
+      var child = this.firestore.collection('accounts', ref=>ref.where('email','==',this.auth.getUserEmail()))
       child.snapshotChanges().pipe(
         map(actions => actions.map(a => {
-          const data = a.payload.doc.data() as any  
-          return data
+            const data = a.payload.doc.data() as any
+            const id = a.payload.doc.id
+            return {id, ...data}
           }))
       ).subscribe(res=>{
-        const userData = res
-        const child_arr = userData[0].child_profile
-        child_arr.push(profile)
-        child.add({
-          child_profile : child_arr
-        })
+          const userData = res
+          const child_arr = userData[0].child_profile
+          child_arr.push(profile)
+          this.firestore.collection('accounts').doc(userid).update({child_profile : child_arr})
       })
+
+      }
     }
-  }
+  
 
 
   readChildProfiles(){  
