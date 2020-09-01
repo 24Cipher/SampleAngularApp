@@ -94,13 +94,15 @@ export class AuthserviceService {
                                 })
     }
   }
+
   writeAccounts(username, phone){
-    const ref = this.firestore.collection('accounts');
-    ref.add({
+    const userid = this.getUserId();
+    const ref = this.firestore.collection('accounts').doc(userid)
+    ref.set({
               name  : username,
-              uid   : this.getUserId(),
               email : this.getUserEmail(),
-              phn   : phone
+              phn   : phone,
+              child_profile : []
     });
   }
 
