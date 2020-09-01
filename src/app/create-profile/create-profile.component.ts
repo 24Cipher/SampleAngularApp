@@ -52,6 +52,7 @@ export class CreateProfileComponent implements OnInit {
 
   addChild(): void {
     console.log(this.childProfileForm.value);
+    this.service.writeChildProfiles(this.childProfileForm.value);
   }
 
   filterSelectedSubjects(): void {

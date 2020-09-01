@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = {name:"", email:"", gender:"", role:"", imageurl:""}
-
+    console.log("isSigned in: ",this.auth.isSignedIn, this.auth.getUserId());
     // this.db.collection("Student")
     // .snapshotChanges()
     // .pipe(
