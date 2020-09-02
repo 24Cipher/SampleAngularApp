@@ -11,12 +11,6 @@
 
 </nav><br>
 
-<div class="row">
-  <div class="col-lg-9"></div>
-  <div class="col-lg-3">
-    <div class="btn btn-primary" (click)=addStudent()>Add Student</div>
-  </div>
-</div><br>
 
 <div class="row">
   <div class="col-lg-4">
@@ -44,8 +38,18 @@
       </div>
     </div>
   </div>
-
-    <div *ngIf=isFormVisible class="col-lg-4">
+  <div class="col-lg-4">
+    <div class="container">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card">
+          <div class="card-body" style="width: min-content;">
+            <app-show-profile></app-show-profile>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- <div *ngIf=isFormVisible class="col-lg-4">
     <div class="container">
       <div class="d-flex justify-content-center h-100">
         <div class="card">
@@ -76,11 +80,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 
 
 <div class="row">
 
-<app-show-profile></app-show-profile>
+
 </div>
