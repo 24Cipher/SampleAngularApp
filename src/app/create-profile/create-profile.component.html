@@ -13,7 +13,7 @@
             <div *ngIf="subjects">
                 <div *ngFor = 'let sub of subjects; let i=index' >
                     <div class="form-check form-check-inline">
-                    <input (change)=checkboxValueChange(i)  name="check" class="form-check-input" type="checkbox" value="sub.isChecked">
+                    <input (change)=checkboxValueChange(i)  name="check" class="form-check-input" type="checkbox" [checked]="sub.isChecked">
                     <label class="form-check-label" for="inlineCheckbox">{{sub.name}}</label>
                     </div>
                 </div>
