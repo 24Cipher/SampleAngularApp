@@ -16,6 +16,7 @@ export class PrototypeService {
   ctype = ['abc','xyz','pqr']
   vlink = "yt.com"
   name="Random guy"
+  child_arr=[]
 
   constructor(private firestore: AngularFirestore, public auth : AuthserviceService) { }
   
