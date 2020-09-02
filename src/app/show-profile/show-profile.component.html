@@ -1,22 +1,24 @@
-<!-- <div *ngFor="let profile of profiles; let i = index">
-    <div>
-        <label>Name:</label>&nbsp;
-        <span>{{profile.name}}</span>
-    </div>
-    <div>
-        <label>Date of Birth:</label>&nbsp;
-        <span>{{profile.dob}}</span>
-    </div>
-    <div>
-        <label>Subjects:</label>&nbsp;
-        <div *ngFor="let sub of profile.subjects;">
-            <span>{{sub.name}}</span>
-            
+<div *ngIf="profiles.length > 0"> 
+    <div *ngFor="let profile of profiles; let i = index">
+        <div>
+            <label>Name:</label>&nbsp;
+            <span>{{profile.name}}</span>
         </div>
+        <div>
+            <label>Date of Birth:</label>&nbsp;
+            <span>{{profile.dob}}</span>
+        </div>
+        <div>
+            <label>Subjects:</label>&nbsp;
+            <div *ngFor="let sub of profile.subjects;">
+                <span>{{sub.name}}</span>
+                
+            </div>
+        </div>
+        <div>
+            <label>Grade:</label>&nbsp;
+            <span>{{profile.grade}}</span>
+        </div>
+        
     </div>
-    <div>
-        <label>Grade:</label>&nbsp;
-        <span>{{profile.grade}}</span>
-    </div>
-    
-</div> -->
+</div>

@@ -80,20 +80,34 @@ export class PrototypeService {
     if(this.auth.isSignedIn){
       const userid = this.auth.getUserId();
       console.log("my user id : ",userid);
-      var child = this.firestore.collection('accounts', ref=>ref.where('email','==',this.auth.getUserEmail()))
-      child.snapshotChanges().pipe(
-        map(actions => actions.map(a => {
-            const data = a.payload.doc.data() as any
-            const id = a.payload.doc.id
-            return {id, ...data}
-          }))
-      ).subscribe(res=>{
-          const userData = res
-          const child_arr = userData[0].child_profile
-          child_arr.push(profile)
-          this.firestore.collection('accounts').doc(userid).update({child_profile : child_arr})
-      })
-
+      // var child = this.firestore.collection('accounts', ref=>ref.where('email','==',this.auth.getUserEmail()))
+      // child.snapshotChanges().pipe(
+      //   map(actions => actions.map(a => {
+      //       const data = a.payload.doc.data() as any
+      //       const id = a.payload.doc.id
+      //       return {id, ...data}
+      //     }))
+      // ).subscribe(res=>{
+      //     const userData = res
+      //     const child_arr = userData[0].child_profile
+      //     child_arr.push(profile)
+      //     this.firestore.collection('accounts').doc(userid).update({child_profile : child_arr})
+      // })
+      const userRef = this.firestore.collection('accounts').doc(userid);
+      userRef.get().toPromise().then((doc) => {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                const resp = doc.data();
+                const profiles = resp.child_profile;
+                profiles.push(profile)
+                userRef.update({child_profile : profiles});
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
       }
     }
   
@@ -101,13 +115,26 @@ export class PrototypeService {
 
   readChildProfiles(){  
     if(this.auth.isSignedIn){
-      var child = this.firestore.collection("accounts", ref=>ref.where('email','==',this.auth.getUserEmail()))
-      return child.snapshotChanges().pipe(
-                                        map(actions => actions.map(a => {
-                                            const data = a.payload.doc.data() as any
-                                            return data
-                                          }))
-                                      )
+      // var child = this.firestore.collection("accounts", ref=>ref.where('email','==',this.auth.getUserEmail()))
+      // return child.snapshotChanges().pipe(
+      //                                   map(actions => actions.map(a => {
+      //                                       const data = a.payload.doc.data() as any
+      //                                       return data
+      //                                     }))
+      //                                 )
+      console.log(this.auth.getUserId())
+      const userRef = this.firestore.collection('accounts').doc(this.auth.getUserId());
+      
+    //   userRef.get().toPromise().then((doc) => {
+    //     if (doc.exists) {
+    //         console.log("Document data:", doc.data());
+    //     } else {
+    //         // doc.data() will be undefined in this case
+    //         console.log("No such document!");
+    //     }
+    // }).catch((error) => {
+    //     console.log("Error getting document:", error);
+    // });
     }
   }
 
