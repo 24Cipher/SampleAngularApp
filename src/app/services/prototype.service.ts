@@ -108,5 +108,26 @@ export class PrototypeService {
     }
   }
 
+  subjectIdToName(subIdArr){
+    const subNameArr=[];
+    for(let subid of subIdArr){
+      const subObject = this.firestore.collection('subjects').doc(subid)
+      subObject.get().toPromise().then((doc) => {
+          if (doc.exists) {
+              console.log("Document data:", doc.data());
+              const resp = doc.data();
+              const subname = resp.name;
+              subNameArr.push(subname)
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+    }
+    return subNameArr;
+  }
+
 
 }
