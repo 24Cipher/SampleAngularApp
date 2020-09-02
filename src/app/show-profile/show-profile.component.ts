@@ -7,7 +7,7 @@ import { PrototypeService } from '../services/prototype.service';
   styleUrls: ['./show-profile.component.scss']
 })
 export class ShowProfileComponent implements OnInit {
-
+  profiles = [];
   constructor(private service: PrototypeService) { }
 
   ngOnInit(): void {
