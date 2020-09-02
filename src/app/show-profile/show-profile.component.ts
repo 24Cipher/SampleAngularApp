@@ -17,6 +17,7 @@ export class ShowProfileComponent implements OnInit {
   readProfiles(): void {
     this.service.readChildProfiles().subscribe(resp => {
       console.log('my resp...',resp);
+      // this.profiles = resp.child_profile;
     })
 
   }

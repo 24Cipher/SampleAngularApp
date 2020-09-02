@@ -81,19 +81,6 @@ export class PrototypeService {
     if(this.auth.isSignedIn){
       const userid = this.auth.getUserId();
       console.log("my user id : ",userid);
-      // var child = this.firestore.collection('accounts', ref=>ref.where('email','==',this.auth.getUserEmail()))
-      // child.snapshotChanges().pipe(
-      //   map(actions => actions.map(a => {
-      //       const data = a.payload.doc.data() as any
-      //       const id = a.payload.doc.id
-      //       return {id, ...data}
-      //     }))
-      // ).subscribe(res=>{
-      //     const userData = res
-      //     const child_arr = userData[0].child_profile
-      //     child_arr.push(profile)
-      //     this.firestore.collection('accounts').doc(userid).update({child_profile : child_arr})
-      // })
       const userRef = this.firestore.collection('accounts').doc(userid);
       userRef.get().toPromise().then((doc) => {
             if (doc.exists) {
