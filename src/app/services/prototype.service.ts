@@ -16,6 +16,7 @@ export class PrototypeService {
   ctype = ['abc','xyz','pqr']
   vlink = "yt.com"
   name="Random guy"
+  child_arr=[]
 
   constructor(private firestore: AngularFirestore, public auth : AuthserviceService) { }
   
@@ -89,11 +90,13 @@ export class PrototypeService {
           }))
       ).subscribe(res=>{
           const userData = res
-          const child_arr = userData[0].child_profile
-          child_arr.push(profile)
-          this.firestore.collection('accounts').doc(userid).update({child_profile : child_arr})
+          this.child_arr = userData[0].child_profile
+          this.child_arr.push(profile)
+          console.log('baadme..',this.child_arr)
       })
 
+      console.log('bahar..',this.child_arr)
+      this.firestore.collection('accounts').doc(userid).update({child_profile : this.child_arr})
       }
     }
   
