@@ -104,13 +104,8 @@ export class PrototypeService {
 
   readChildProfiles(){  
     if(this.auth.isSignedIn){
-      var child = this.firestore.collection("accounts", ref=>ref.where('email','==',this.auth.getUserEmail()))
-      return child.snapshotChanges().pipe(
-                                        map(actions => actions.map(a => {
-                                            const data = a.payload.doc.data() as any
-                                            return data
-                                          }))
-                                      )
+      var child = this.firestore.collection("accounts").doc(this.auth.getUserId())
+      return child.valueChanges();
     }
   }
 
